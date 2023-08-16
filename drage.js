@@ -11,12 +11,23 @@ class Drage {
     this.pageX
     this.pageY
     this.style = `z-index: 999999;`
+    this.setStorage
   }
 
-  listen(ref, style) {
+  /**
+   *
+   * @param ref <HTMLElement>
+   * @param style <String>
+   * @param setStorage <String> local(当前窗口关闭前有效，不共享) | session(持久有效，同源窗口共享)
+   */
+  listen(ref, style, setStorage) {
     this.ref = ref
     if (style) {
       this.style = style
+    }
+    if (setStorage) {
+      this.setStorage = setStorage
+      this.storageHandle('get')
     }
 
     this.ref && this.ref.setAttribute('draggable', 'true')
@@ -27,6 +38,53 @@ class Drage {
     this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this))
     this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this))
     this.ref && this.ref.addEventListener('mouseout', _ => this.onEnd(_, this))
+  }
+
+  storageHandle(operation) {
+    if (operation === 'get') {
+      let storage
+      if (this.setStorage === 'local') {
+        storage = localStorage.getItem('DrageJS_INFO')
+      }
+      if (this.setStorage === 'session') {
+        storage = sessionStorage.getItem('DrageJS_INFO')
+      }
+      try {
+        storage = JSON.parse(storage)
+        this.currentX = storage.currentX
+        this.initX = storage.currentX
+        this.offsetX = storage.currentX
+        this.currentY = storage.currentY
+        this.initY = storage.currentY
+        this.offsetY = storage.currentY
+        this.setRef()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    if (operation === 'set') {
+      if (this.setStorage === 'local') {
+        localStorage.setItem('DrageJS_INFO', JSON.stringify({
+          currentX: this.currentX,
+          currentY: this.currentY
+        }))
+      }
+      if (this.setStorage === 'session') {
+        sessionStorage.setItem('DrageJS_INFO', JSON.stringify({
+          currentX: this.currentX,
+          currentY: this.currentY
+        }))
+      }
+    }
+    if (operation === 'remove') {
+      localStorage.removeItem('DrageJS_INFO')
+      sessionStorage.removeItem('DrageJS_INFO')
+    }
+  }
+
+  setRef() {
+    if (!this.ref) return
+    this.ref.style = `${this.style}transform: translate(${this.currentX}px, ${this.currentY}px);`
   }
 
   onStart(event, _this) {
@@ -109,14 +167,7 @@ class Drage {
           }
         }
 
-
-        if (_this.ref) {
-          _this.ref.style = `
-            ${_this.style}
-            transform: translate(${_this.currentX}px, ${_this.currentY}px);
-          `
-        }
-
+        _this.setRef()
       }
     }
   }
@@ -125,6 +176,7 @@ class Drage {
     _this.ref && _this.ref.removeEventListener('touchmove', _ => _this.onMove(_, _this))
     _this.ref && _this.ref.removeEventListener('mousemove', _ => _this.onMove(_, _this))
     _this.draggingFlag = false
+    _this.storageHandle('set')
   }
 
   removeListen(ref) {
