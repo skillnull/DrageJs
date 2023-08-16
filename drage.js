@@ -18,7 +18,7 @@ class Drage {
    *
    * @param ref <HTMLElement>
    * @param style <String>
-   * @param setStorage <String> local(当前窗口关闭前有效，不共享) | session(持久有效，同源窗口共享)
+   * @param setStorage <String> session(当前窗口关闭前有效，不共享) | local(持久有效，同源窗口共享)
    */
   listen(ref, style, setStorage) {
     this.ref = ref
