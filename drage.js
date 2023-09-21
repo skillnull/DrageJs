@@ -51,6 +51,7 @@ class Drage {
       }
       try {
         storage = JSON.parse(storage)
+        if (!storage) return
         this.currentX = storage.currentX
         this.initX = storage.currentX
         this.offsetX = storage.currentX
