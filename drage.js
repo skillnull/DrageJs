@@ -89,13 +89,13 @@ class Drage {
   }
 
   onStart(event, _this) {
+    let _event = event.type === 'mousedown' ? event : event.changedTouches && event.changedTouches[0]
 
-    if (event.changedTouches && event.changedTouches[0]) {
-      _this.initX = event.changedTouches[0].clientX - _this.offsetX
-      _this.initY = event.changedTouches[0].clientY - _this.offsetY
-      _this.pageX = event.changedTouches[0].pageX
-      _this.pageY = event.changedTouches[0].pageY
-    }
+    _this.initX = _event.clientX - _this.offsetX
+    _this.initY = _event.clientY - _this.offsetY
+    _this.pageX = _event.pageX
+    _this.pageY = _event.pageY
+
 
     _this.ref && _this.ref.addEventListener('touchmove', _ => _this.onMove(_, _this))
     _this.ref && _this.ref.addEventListener('mousemove', _ => _this.onMove(_, _this))
@@ -104,73 +104,72 @@ class Drage {
   }
 
   onMove(event, _this) {
-    if (_this.draggingFlag) {
-      event.preventDefault()
-      if (event.changedTouches && event.changedTouches[0]) {
+    if (!_this.draggingFlag) return
+    event.preventDefault()
 
-        _this.currentX = event.changedTouches[0].clientX - _this.initX
-        _this.currentY = event.changedTouches[0].clientY - _this.initY
+    let _event = event.type === 'mousemove' ? event : event.changedTouches && event.changedTouches[0]
 
-        // pageX > 0 往右划，pageX < 0 往左划
-        const pageX = event.changedTouches[0].pageX - _this.pageX
-        // pageY < 0 往上划，pageY > 0 往下划
-        const pageY = event.changedTouches[0].pageY - _this.pageY
+    _this.currentX = _event.clientX - _this.initX
+    _this.currentY = _event.clientY - _this.initY
 
-        const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
+    // pageX > 0 往右划，pageX < 0 往左划
+    const pageX = _event.pageX - _this.pageX
+    // pageY < 0 往上划，pageY > 0 往下划
+    const pageY = _event.pageY - _this.pageY
 
-        const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
 
-        // 是否到达左边缘
-        if (left <= 0) {
-          // 到达左边缘后是否向右拖动
-          if (pageX > 0) {
-            _this.offsetX = _this.currentX
-          } else {
-            _this.offsetX -= left
-            _this.currentX = _this.offsetX
-          }
+    const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    // 是否到达左边缘
+    if (left <= 0) {
+      // 到达左边缘后是否向右拖动
+      if (pageX > 0) {
+        _this.offsetX = _this.currentX
+      } else {
+        _this.offsetX -= left
+        _this.currentX = _this.offsetX
+      }
+    } else {
+      // 是否到达右边缘
+      if (right >= clientW) {
+        // 到达右边缘后是否向左拖动
+        if (pageX < 0) {
+          _this.offsetX = _this.currentX
         } else {
-          // 是否到达右边缘
-          if (right >= clientW) {
-            // 到达右边缘后是否向左拖动
-            if (pageX < 0) {
-              _this.offsetX = _this.currentX
-            } else {
-              _this.currentX = _this.offsetX
-            }
-          } else {
-            _this.offsetX = _this.currentX
-          }
+          _this.currentX = _this.offsetX
         }
-
-
-        // 是否到达上边缘
-        if (top <= 0) {
-          // 到达上边缘后是否往下划
-          if (pageY > 0) {
-            _this.offsetY = _this.currentY
-          } else {
-            _this.offsetY -= top
-            _this.currentY = _this.offsetY
-          }
-        } else {
-          // 是否到达下边缘
-          if (bottom >= clientH) {
-            // 到达下边缘后是否往上划
-            if (pageY < 0) {
-              _this.offsetY = _this.currentY
-            } else {
-              _this.currentY = _this.offsetY
-            }
-          } else {
-            _this.offsetY = _this.currentY
-          }
-        }
-
-        _this.setRef()
+      } else {
+        _this.offsetX = _this.currentX
       }
     }
+
+
+    // 是否到达上边缘
+    if (top <= 0) {
+      // 到达上边缘后是否往下划
+      if (pageY > 0) {
+        _this.offsetY = _this.currentY
+      } else {
+        _this.offsetY -= top
+        _this.currentY = _this.offsetY
+      }
+    } else {
+      // 是否到达下边缘
+      if (bottom >= clientH) {
+        // 到达下边缘后是否往上划
+        if (pageY < 0) {
+          _this.offsetY = _this.currentY
+        } else {
+          _this.currentY = _this.offsetY
+        }
+      } else {
+        _this.offsetY = _this.currentY
+      }
+    }
+
+    _this.setRef()
   }
 
   onEnd(event, _this) {
