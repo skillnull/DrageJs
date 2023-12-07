@@ -10,17 +10,22 @@ class Drage {
     this.offsetY = 0
     this.pageX
     this.pageY
-    this.style = `z-index: 999999;`
+    this.style = {
+      zIndex: '999999'
+    }
     this.setStorage
   }
 
   /**
-   *
-   * @param ref <HTMLElement>
-   * @param style <String>
-   * @param setStorage <String> session(当前窗口关闭前有效，不共享) | local(持久有效，同源窗口共享)
+   * 启用拖拽
+   * @param ref <HTMLElement> [必需]
+   * @param style <Object> [非必需，默认值： {}]
+   * @param setStorage <String> session(当前窗口关闭前有效，不共享) | local(持久有效，同源窗口共享)  [非必需，默认值: 'local']
    */
-  listen(ref, style, setStorage) {
+  listen({ref, style = {}, setStorage = 'local'}) {
+    window.onresize = () => {
+      this.storageHandle('remove')
+    }
     this.ref = ref
     if (style) {
       this.style = style
@@ -85,7 +90,10 @@ class Drage {
 
   setRef() {
     if (!this.ref) return
-    this.ref.style = `${this.style}transform: translate(${this.currentX}px, ${this.currentY}px);`
+    for (let item in this.style) {
+      this.ref.style[item] = this.style[item]
+    }
+    this.ref.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`
   }
 
   onStart(event, _this) {
@@ -95,7 +103,6 @@ class Drage {
     _this.initY = _event.clientY - _this.offsetY
     _this.pageX = _event.pageX
     _this.pageY = _event.pageY
-
 
     _this.ref && _this.ref.addEventListener('touchmove', _ => _this.onMove(_, _this))
     _this.ref && _this.ref.addEventListener('mousemove', _ => _this.onMove(_, _this))
@@ -144,7 +151,6 @@ class Drage {
         _this.offsetX = _this.currentX
       }
     }
-
 
     // 是否到达上边缘
     if (top <= 0) {
