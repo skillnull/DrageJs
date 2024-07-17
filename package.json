@@ -17,7 +17,7 @@
   "homepage": "https://github.com/skillnull/DrageJs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/skillnull/DrageJs.git"
+    "url": "https://github.com/skillnull/DrageJs"
   },
   "publishConfig": {
     "access": "public"
