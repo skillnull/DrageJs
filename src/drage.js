@@ -1,4 +1,4 @@
-class Drage {
+class DrageJs {
   constructor() {
     this.ref
     this.draggingFlag = false
@@ -22,7 +22,7 @@ class Drage {
    * @param style <Object> [非必需，默认值： {}]
    * @param setStorage <String> session(当前窗口关闭前有效，不共享) | local(持久有效，同源窗口共享)  [非必需，默认值: 'local']
    */
-  listen({ref, style = {}, setStorage = 'local'}) {
+  listen({ ref, style = {}, setStorage = 'local' }) {
     window.onresize = () => {
       this.storageHandle('remove')
     }
@@ -124,7 +124,7 @@ class Drage {
     // pageY < 0 往上划，pageY > 0 往下划
     const pageY = _event.pageY - _this.pageY
 
-    const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
+    const { top, bottom, left, right } = _this.ref.getBoundingClientRect()
 
     const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -198,4 +198,8 @@ class Drage {
   }
 }
 
-export default new Drage()
+const Drage = new DrageJs()
+
+window.Drage = Drage
+
+export default Drage
