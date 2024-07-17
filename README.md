@@ -10,7 +10,7 @@
 #### 使用
 
 ```javascript
-import Drage from '/drage'
+import Drage from '@skillnull/drage-js'
 
 /**
  * 启用拖拽
