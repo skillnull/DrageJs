@@ -7,9 +7,36 @@
 
 #### JS元素拖拽
 
-#### 使用
+> CDN
+```html
+使用 UMD 格式
+<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.3/dist/drage.js"></script>
+# or
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.3/dist/drage.js"></script>
+
+
+使用 ES 格式
+<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.3/dist/drage.es.js" type="module"></script>
+# or
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.3/dist/drage.es.js" type="module"></script>
+``` 
+
+> #### 安装
+
+```shell
+# NPM or YARN
+
+yarn add @skillnull/drage-js
+
+# or with npm
+
+npm install @skillnull/drage-js
+```
+
+> #### 调用
 
 ```javascript
+// 使用 CDN 引用时，无需 import 
 import Drage from '@skillnull/drage-js'
 
 /**
