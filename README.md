@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="http://skillnull.com/others/images/DrageJs.png" alt="DrageJs">
+  <img src="http://skillnull.com/others/images/DrageJs.png" width="400px" alt="DrageJs">
 </div>
 <br>
 <div align="center" >
