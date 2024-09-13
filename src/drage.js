@@ -11,6 +11,7 @@ class DrageJs {
     this.pageX
     this.pageY
     this.style = {
+      position: "fixed",
       zIndex: '999999'
     }
     this.setStorage
