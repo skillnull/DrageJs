@@ -1,0 +1,32 @@
+html, body, #app {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: fangsong;
+  font-weight: 300;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    background-color: #eeeeee;
+    color: black;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #333333;
+    color: white;
+  }
+}
+
+.list-box {
+  width: 100px;
+  height: 100px;
+  background: aliceblue;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
