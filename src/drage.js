@@ -23,7 +23,7 @@ class DrageJs {
    * @param style <Object> [非必需，默认值： {}]
    * @param setStorage <String> session(当前窗口关闭前有效，不共享) | local(持久有效，同源窗口共享)  [非必需，默认值: 'local']
    */
-  listen({ ref, style = {}, setStorage = 'local' }) {
+  listen({ref, style = {}, setStorage = 'local'}) {
     window.onresize = () => {
       this.storageHandle('remove')
     }
@@ -38,12 +38,12 @@ class DrageJs {
 
     this.ref && this.ref.setAttribute('draggable', 'true')
 
-    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this))
-    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this))
+    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this), {passive: false})
+    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this), {passive: false})
 
-    this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this))
-    this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this))
-    this.ref && this.ref.addEventListener('mouseout', _ => this.onEnd(_, this))
+    this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this), {passive: false})
+    this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this), {passive: false})
+    this.ref && this.ref.addEventListener('mouseout', _ => this.onEnd(_, this), {passive: false})
   }
 
   storageHandle(operation) {
@@ -105,14 +105,14 @@ class DrageJs {
     _this.pageX = _event.pageX
     _this.pageY = _event.pageY
 
-    _this.ref && _this.ref.addEventListener('touchmove', _ => _this.onMove(_, _this))
-    _this.ref && _this.ref.addEventListener('mousemove', _ => _this.onMove(_, _this))
+    document.addEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
+    document.addEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
 
     _this.draggingFlag = true
   }
 
   onMove(event, _this) {
-    if (!_this.draggingFlag) return
+    if (!_this.draggingFlag || !event) return
     event.preventDefault()
 
     let _event = event.type === 'mousemove' ? event : event.changedTouches && event.changedTouches[0]
@@ -125,7 +125,7 @@ class DrageJs {
     // pageY < 0 往上划，pageY > 0 往下划
     const pageY = _event.pageY - _this.pageY
 
-    const { top, bottom, left, right } = _this.ref.getBoundingClientRect()
+    const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
 
     const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -180,8 +180,8 @@ class DrageJs {
   }
 
   onEnd(event, _this) {
-    _this.ref && _this.ref.removeEventListener('touchmove', _ => _this.onMove(_, _this))
-    _this.ref && _this.ref.removeEventListener('mousemove', _ => _this.onMove(_, _this))
+    document.removeEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
+    document.removeEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
     _this.draggingFlag = false
     _this.storageHandle('set')
   }
@@ -189,18 +189,18 @@ class DrageJs {
   removeListen(ref) {
     const _ref = ref ? ref : this.ref
     if (!_ref) return
-    _ref.removeEventListener('touchmove', _ => this.onMove(_, this))
-    _ref.removeEventListener('mousemove', _ => this.onMove(_, this))
-    _ref.removeEventListener('touchstart', _ => this.onStart(_, this))
-    _ref.removeEventListener('mousedown', _ => this.onStart(_, this))
-    _ref.removeEventListener('touchend', _ => this.onEnd(_, this))
-    _ref.removeEventListener('mouseup', _ => this.onEnd(_, this))
-    _ref.removeEventListener('mouseout', _ => this.onEnd(_, this))
+    _ref.removeEventListener('touchmove', _ => this.onMove(_, this), {passive: false})
+    _ref.removeEventListener('mousemove', _ => this.onMove(_, this), {passive: false})
+    _ref.removeEventListener('touchstart', _ => this.onStart(_, this), {passive: false})
+    _ref.removeEventListener('mousedown', _ => this.onStart(_, this), {passive: false})
+    _ref.removeEventListener('touchend', _ => this.onEnd(_, this), {passive: false})
+    _ref.removeEventListener('mouseup', _ => this.onEnd(_, this), {passive: false})
+    _ref.removeEventListener('mouseout', _ => this.onEnd(_, this), {passive: false})
   }
 }
 
 const Drage = new DrageJs()
 
-window.Drage = Drage
-
-export default Drage
+// window.Drage = Drage
+//
+// export default Drage

@@ -29,4 +29,7 @@ html, body, #app {
   border-radius: 6px;
   text-align: center;
   cursor: pointer;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
