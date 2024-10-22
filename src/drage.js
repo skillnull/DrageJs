@@ -15,6 +15,8 @@ class DrageJs {
       zIndex: '999999'
     }
     this.setStorage
+    this.animationFrame
+
   }
 
   /**
@@ -27,10 +29,13 @@ class DrageJs {
     window.onresize = () => {
       this.storageHandle('remove')
     }
+
     this.ref = ref
+
     if (style) {
       this.style = style
     }
+
     if (setStorage) {
       this.setStorage = setStorage
       this.storageHandle('get')
@@ -38,12 +43,17 @@ class DrageJs {
 
     this.ref && this.ref.setAttribute('draggable', 'true')
 
-    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this), {passive: false})
-    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this), {passive: false})
+    // 阻止触发 mousedown 的同时触发 click 事件
+    this.ref && this.ref.addEventListener('dragstart', (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+    })
 
-    this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this), {passive: false})
-    this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this), {passive: false})
-    this.ref && this.ref.addEventListener('mouseout', _ => this.onEnd(_, this), {passive: false})
+    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this))
+    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this))
+
+    this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this))
+    this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this))
   }
 
   storageHandle(operation) {
@@ -94,10 +104,12 @@ class DrageJs {
     for (let item in this.style) {
       this.ref.style[item] = this.style[item]
     }
-    this.ref.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`
+    this.ref.style.transform = `translate3d(${this.currentX}px, ${this.currentY}px, 0)`
   }
 
   onStart(event, _this) {
+    _this.draggingFlag = true
+
     let _event = event.type === 'mousedown' ? event : event.changedTouches && event.changedTouches[0]
 
     _this.initX = _event.clientX - _this.offsetX
@@ -107,8 +119,6 @@ class DrageJs {
 
     document.addEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
     document.addEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
-
-    _this.draggingFlag = true
   }
 
   onMove(event, _this) {
@@ -117,85 +127,92 @@ class DrageJs {
 
     let _event = event.type === 'mousemove' ? event : event.changedTouches && event.changedTouches[0]
 
-    _this.currentX = _event.clientX - _this.initX
-    _this.currentY = _event.clientY - _this.initY
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame)
+    }
 
-    // pageX > 0 往右划，pageX < 0 往左划
-    const pageX = _event.pageX - _this.pageX
-    // pageY < 0 往上划，pageY > 0 往下划
-    const pageY = _event.pageY - _this.pageY
+    this.animationFrame = requestAnimationFrame(() => {
+      _this.currentX = _event.clientX - _this.initX
+      _this.currentY = _event.clientY - _this.initY
 
-    const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
+      // pageX > 0 往右划，pageX < 0 往左划
+      const pageX = _event.pageX - _this.pageX
+      // pageY < 0 往上划，pageY > 0 往下划
+      const pageY = _event.pageY - _this.pageY
 
-    const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+      const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
 
-    // 是否到达左边缘
-    if (left <= 0) {
-      // 到达左边缘后是否向右拖动
-      if (pageX > 0) {
-        _this.offsetX = _this.currentX
-      } else {
-        _this.offsetX -= left
-        _this.currentX = _this.offsetX
-      }
-    } else {
-      // 是否到达右边缘
-      if (right >= clientW) {
-        // 到达右边缘后是否向左拖动
-        if (pageX < 0) {
+      const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+      // 是否到达左边缘
+      if (left <= 0) {
+        // 到达左边缘后是否向右拖动
+        if (pageX > 0) {
           _this.offsetX = _this.currentX
         } else {
+          _this.offsetX -= left
           _this.currentX = _this.offsetX
         }
       } else {
-        _this.offsetX = _this.currentX
+        // 是否到达右边缘
+        if (right >= clientW) {
+          // 到达右边缘后是否向左拖动
+          if (pageX < 0) {
+            _this.offsetX = _this.currentX
+          } else {
+            _this.currentX = _this.offsetX
+          }
+        } else {
+          _this.offsetX = _this.currentX
+        }
       }
-    }
 
-    // 是否到达上边缘
-    if (top <= 0) {
-      // 到达上边缘后是否往下划
-      if (pageY > 0) {
-        _this.offsetY = _this.currentY
-      } else {
-        _this.offsetY -= top
-        _this.currentY = _this.offsetY
-      }
-    } else {
-      // 是否到达下边缘
-      if (bottom >= clientH) {
-        // 到达下边缘后是否往上划
-        if (pageY < 0) {
+      // 是否到达上边缘
+      if (top <= 0) {
+        // 到达上边缘后是否往下划
+        if (pageY > 0) {
           _this.offsetY = _this.currentY
         } else {
+          _this.offsetY -= top
           _this.currentY = _this.offsetY
         }
       } else {
-        _this.offsetY = _this.currentY
+        // 是否到达下边缘
+        if (bottom >= clientH) {
+          // 到达下边缘后是否往上划
+          if (pageY < 0) {
+            _this.offsetY = _this.currentY
+          } else {
+            _this.currentY = _this.offsetY
+          }
+        } else {
+          _this.offsetY = _this.currentY
+        }
       }
-    }
 
-    _this.setRef()
+      _this.setRef()
+    })
   }
 
   onEnd(event, _this) {
-    document.removeEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
-    document.removeEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
+    console.log(999)
     _this.draggingFlag = false
+    document.removeEventListener('touchmove', _ => _this.onMove(_, _this))
+    document.removeEventListener('mousemove', _ => _this.onMove(_, _this))
     _this.storageHandle('set')
   }
 
   removeListen(ref) {
-    const _ref = ref ? ref : this.ref
+    const _ref = ref ? ref : this.ref || document
     if (!_ref) return
-    _ref.removeEventListener('touchmove', _ => this.onMove(_, this), {passive: false})
-    _ref.removeEventListener('mousemove', _ => this.onMove(_, this), {passive: false})
-    _ref.removeEventListener('touchstart', _ => this.onStart(_, this), {passive: false})
-    _ref.removeEventListener('mousedown', _ => this.onStart(_, this), {passive: false})
-    _ref.removeEventListener('touchend', _ => this.onEnd(_, this), {passive: false})
-    _ref.removeEventListener('mouseup', _ => this.onEnd(_, this), {passive: false})
-    _ref.removeEventListener('mouseout', _ => this.onEnd(_, this), {passive: false})
+    _ref.removeEventListener('touchmove', _ => this.onMove(_, this))
+    _ref.removeEventListener('mousemove', _ => this.onMove(_, this))
+    _ref.removeEventListener('touchstart', _ => this.onStart(_, this))
+    _ref.removeEventListener('mousedown', _ => this.onStart(_, this))
+    _ref.removeEventListener('touchend', _ => this.onEnd(_, this))
+    _ref.removeEventListener('mouseup', _ => this.onEnd(_, this))
+    _ref.removeEventListener('mouseout', _ => this.onEnd(_, this))
   }
 }
 

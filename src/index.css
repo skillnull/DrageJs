@@ -28,8 +28,12 @@ html, body, #app {
   background: aliceblue;
   border-radius: 6px;
   text-align: center;
-  cursor: pointer;
+  cursor: move;
   position: absolute;
   right: 20px;
   bottom: 20px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
