@@ -43,7 +43,8 @@ class DrageJs {
 
     this.ref && this.ref.setAttribute('draggable', 'true')
 
-    // 阻止触发 mousedown 的同时触发 click 事件
+    // 在同一个元素上按下并松开鼠标左键，会依次触发mousedown、mouseup、click
+    // 监听并阻止触发 mousedown 的同时触发 click 事件
     this.ref && this.ref.addEventListener('dragstart', (event) => {
       event.preventDefault()
       event.stopPropagation()
@@ -196,7 +197,6 @@ class DrageJs {
   }
 
   onEnd(event, _this) {
-    console.log(999)
     _this.draggingFlag = false
     document.removeEventListener('touchmove', _ => _this.onMove(_, _this))
     document.removeEventListener('mousemove', _ => _this.onMove(_, _this))
@@ -218,6 +218,6 @@ class DrageJs {
 
 const Drage = new DrageJs()
 
-// window.Drage = Drage
-//
-// export default Drage
+window.Drage = Drage
+
+export default Drage
