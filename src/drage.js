@@ -16,7 +16,6 @@ class DrageJs {
     }
     this.setStorage
     this.animationFrame
-
   }
 
   /**
@@ -124,6 +123,7 @@ class DrageJs {
 
   onMove(event, _this) {
     if (!_this.draggingFlag || !event) return
+
     event.preventDefault()
 
     let _event = event.type === 'mousemove' ? event : event.changedTouches && event.changedTouches[0]
@@ -218,6 +218,6 @@ class DrageJs {
 
 const Drage = new DrageJs()
 
-window.Drage = Drage
-
-export default Drage
+// window.Drage = Drage
+//
+// export default Drage
