@@ -16,6 +16,16 @@ class DrageJs {
     }
     this.setStorage
     this.animationFrame
+    this.clientW = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
+    this.clientH = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
+    // 贴到左边时，向左移动的距离
+    this.xLeftTmp = 0
+    // 贴到右边时，向右移动的距离
+    this.xRightTmp = this.clientW
+    // 贴到顶部时，向上移动的距离
+    this.yTopTmp = 0
+    // 贴到底部时，向下移动的距离
+    this.yBottomTmp = this.clientH
   }
 
   /**
@@ -40,20 +50,13 @@ class DrageJs {
       this.storageHandle('get')
     }
 
-    this.ref && this.ref.setAttribute('draggable', 'true')
-
-    // 在同一个元素上按下并松开鼠标左键，会依次触发mousedown、mouseup、click
-    // 监听并阻止触发 mousedown 的同时触发 click 事件
-    this.ref && this.ref.addEventListener('dragstart', (event) => {
-      event.preventDefault()
-      event.stopPropagation()
-    })
+    this.ref && this.ref.setAttribute('draggable', false)
 
     this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this))
     this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this))
 
-    this.ref && this.ref.addEventListener('touchend', _ => this.onEnd(_, this))
-    this.ref && this.ref.addEventListener('mouseup', _ => this.onEnd(_, this))
+    document.addEventListener('touchend', _ => this.onEnd(_, this))
+    document.addEventListener('mouseup', _ => this.onEnd(_, this))
   }
 
   storageHandle(operation) {
@@ -143,13 +146,13 @@ class DrageJs {
 
       const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
 
-      const clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-      const clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
       // 是否到达左边缘
       if (left <= 0) {
+        if (left < 0) {
+          this.xLeftTmp = _event.pageX
+        }
         // 到达左边缘后是否向右拖动
-        if (pageX > 0) {
+        if (_event.pageX - this.xLeftTmp > 0) {
           _this.offsetX = _this.currentX
         } else {
           _this.offsetX -= left
@@ -157,9 +160,12 @@ class DrageJs {
         }
       } else {
         // 是否到达右边缘
-        if (right >= clientW) {
+        if (right >= this.clientW) {
+          if (_event.pageX > this.clientW) {
+            this.xRightTmp = _event.pageX
+          }
           // 到达右边缘后是否向左拖动
-          if (pageX < 0) {
+          if (_event.pageX - this.xRightTmp < 0) {
             _this.offsetX = _this.currentX
           } else {
             _this.currentX = _this.offsetX
@@ -171,8 +177,11 @@ class DrageJs {
 
       // 是否到达上边缘
       if (top <= 0) {
+        if (top < 0) {
+          this.yTopTmp = _event.pageY
+        }
         // 到达上边缘后是否往下划
-        if (pageY > 0) {
+        if (_event.pageY - this.yTopTmp > 0) {
           _this.offsetY = _this.currentY
         } else {
           _this.offsetY -= top
@@ -180,9 +189,12 @@ class DrageJs {
         }
       } else {
         // 是否到达下边缘
-        if (bottom >= clientH) {
+        if (bottom >= this.clientH) {
+          if (_event.pageY > this.clientH) {
+            this.yBottomTmp = _event.pageY
+          }
           // 到达下边缘后是否往上划
-          if (pageY < 0) {
+          if (_event.pageY - this.yBottomTmp < 0) {
             _this.offsetY = _this.currentY
           } else {
             _this.currentY = _this.offsetY

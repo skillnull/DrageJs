@@ -5,6 +5,7 @@ html, body, #app {
   margin: 0;
   font-family: fangsong;
   font-weight: 300;
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: light) {
