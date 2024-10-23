@@ -6,7 +6,7 @@ class Watermark {
     this.init = this.init.bind(this)
   }
 
-  init(params) {
+  addWaterMark(params) {
     const _mark = document.querySelector('#skillnull_watermark_container')
     if (_mark) {
       _mark.parentElement.removeChild(_mark)
@@ -35,6 +35,39 @@ class Watermark {
     // 要添加水印元素
     const mark_target = document.querySelector(params.target)
     mark_target.appendChild(this.mark)
+  }
+
+  observer(params) {
+    let observer = new MutationObserver((mutations) => {
+      mutations.forEach((item) => {
+        if (item.removedNodes.length > 0 && item.removedNodes[0].id === "skillnull_watermark_container") {
+          this.addWaterMark(params)
+        }
+        if (item.type === 'attributes' && item.target.id === "skillnull_watermark_container") {
+          const target = document.querySelector('#skillnull_watermark_container')
+          target.style.display = 'block'
+          target.style.opacity = 1
+        }
+        if (item.type === 'attributes' && item.target.id === params.target.replace('#', '').replace('.', '')) {
+          const target = document.querySelector(params.target)
+          target.style.display = 'block'
+          target.style.opacity = 1
+        }
+      })
+    })
+    observer.observe(document.body, {
+      childList: true,
+      attributes: true,
+      subtree: true,
+      attributeOldValue: true,
+      characterData: true,
+      characterDataOldValue: true
+    })
+  }
+
+  init(params) {
+    this.addWaterMark(params)
+    this.observer(params)
   }
 }
 
