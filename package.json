@@ -1,6 +1,6 @@
 {
   "name": "@skillnull/drage-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "拖拽元素到页面任意位置",
   "main": "dist/drage",
   "author": "skillnull",

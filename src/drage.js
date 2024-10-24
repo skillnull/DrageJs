@@ -200,6 +200,6 @@ class DrageJs {
 
 const Drage = new DrageJs()
 
-// window.Drage = Drage
-//
-// export default Drage
+window.Drage = Drage
+
+export default Drage
