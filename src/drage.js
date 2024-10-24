@@ -46,8 +46,8 @@ class DrageJs {
 
     this.ref && this.ref.setAttribute('draggable', false)
 
-    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this))
-    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this))
+    this.ref && this.ref.addEventListener('touchstart', _ => this.onStart(_, this), {passive: false})
+    this.ref && this.ref.addEventListener('mousedown', _ => this.onStart(_, this), {passive: false})
 
     document.addEventListener('touchend', _ => this.onEnd(_, this))
     document.addEventListener('mouseup', _ => this.onEnd(_, this))
@@ -105,6 +105,8 @@ class DrageJs {
   }
 
   onStart(event, _this) {
+    event.preventDefault()
+
     _this.draggingFlag = true
 
     let _event = event.type === 'mousedown' ? event : event.changedTouches && event.changedTouches[0]
@@ -116,7 +118,6 @@ class DrageJs {
 
     document.addEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
     document.addEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
-    document.addEventListener('mouseleave', _ => _this.onEnd(_, _this), {passive: false})
   }
 
   onMove(event, _this) {
