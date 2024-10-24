@@ -16,8 +16,8 @@ class DrageJs {
     }
     this.setStorage
     this.animationFrame
-    this.clientW = document.body.clientWidth || document.documentElement.clientWidth || window.innerWidth;
-    this.clientH = document.body.clientHeight || document.documentElement.clientHeight || window.innerHeight;
+    this.clientW = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
+    this.clientH = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
   }
 
   /**
@@ -29,6 +29,8 @@ class DrageJs {
   listen({ref, style = {}, setStorage = 'local'}) {
     window.onresize = () => {
       this.storageHandle('remove')
+      this.clientW = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
+      this.clientH = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
     }
 
     this.ref = ref
@@ -114,6 +116,7 @@ class DrageJs {
 
     document.addEventListener('touchmove', _ => _this.onMove(_, _this), {passive: false})
     document.addEventListener('mousemove', _ => _this.onMove(_, _this), {passive: false})
+    document.addEventListener('mouseleave', _ => _this.onEnd(_, _this), {passive: false})
   }
 
   onMove(event, _this) {
@@ -128,13 +131,13 @@ class DrageJs {
     }
 
     _this.animationFrame = requestAnimationFrame(() => {
+      const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
+
       _this.currentX = _event.clientX - _this.initX
       _this.currentY = _event.clientY - _this.initY
 
       const moveX = _this.currentX - _this.offsetX
       const moveY = _this.currentY - _this.offsetY
-
-      const {top, bottom, left, right} = _this.ref.getBoundingClientRect()
 
       // 是否到达左边缘
       if (left <= 0) {

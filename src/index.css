@@ -6,6 +6,7 @@ html, body, #app {
   font-family: fangsong;
   font-weight: 300;
   overflow: hidden;
+  position: relative;
 }
 
 @media (prefers-color-scheme: light) {
