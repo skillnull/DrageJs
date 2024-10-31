@@ -1,0 +1,44 @@
+@media (prefers-color-scheme: dark) {
+
+  html, body, #app {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    font-family: fangsong;
+    font-weight: 300;
+    overflow: hidden;
+    position: relative;
+  }
+
+  html {
+    background-color: #333333;
+    color: white;
+  }
+
+  #watermark_box {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .drag-box {
+    width: 100px;
+    height: 100px;
+    background: aliceblue;
+    border-radius: 6px;
+    text-align: center;
+    cursor: move;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    overflow: hidden;
+  }
+}
