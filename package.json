@@ -1,6 +1,6 @@
 {
   "name": "@skillnull/drage-js",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "拖拽元素到页面任意位置",
   "main": "dist/drage",
   "author": "skillnull",
@@ -37,5 +37,10 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "rollup": "^4.18.1",
     "rollup-plugin-terser": "^7.0.2"
+  },
+  "dependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "jsdom": "^26.0.0",
+    "rollup-plugin-polyfill-node": "^0.13.0"
   }
 }

@@ -1,9 +1,18 @@
 import { terser } from "rollup-plugin-terser"
 import { babel } from "@rollup/plugin-babel"
 import commonjs from "@rollup/plugin-commonjs"
-import resolve from "@rollup/plugin-node-resolve"
+import nodePolyfills from 'rollup-plugin-polyfill-node'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import json from '@rollup/plugin-json'
 
 const name = "drage"
+
+const globals = {
+  "dayjs": "dayjs",
+  "md5": "md5",
+  "qs": "qs",
+  "crypto-js": "crypto"
+}
 
 /**
  * amd - 异步模块加载，适用于 RequireJS 等模块加载器
@@ -15,18 +24,32 @@ const name = "drage"
  */
 export default {
   input: 'src/drage.js',
-  plugins: [resolve(), babel({ babelHelpers: 'runtime', exclude: /node_modules/ }), commonjs(), terser()],
+  plugins: [
+    json(),
+    nodeResolve({
+      exportConditions: ["node", "browser"],
+      preferBuiltins: true,
+      browser: true
+    }),
+    commonjs(),
+    nodePolyfills(),
+    babel({babelHelpers: 'runtime', exclude: /node_modules/}),
+    terser()
+  ],
   output: [
     {
       file: `dist/${name}.es.js`,
       format: 'es',
-      compact: true //  是否压缩 Rollup 产生的额外代码
+      compact: true, //  是否压缩 Rollup 产生的额外代码
+      globals: globals
     },
     {
       file: `dist/${name}.js`,
       name: "Drage",
       format: 'umd',
-      compact: true
+      compact: true,
+      globals: globals
     }
-  ]
+  ],
+  context: "window"
 }

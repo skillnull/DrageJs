@@ -11,15 +11,15 @@
 > CDN
 ```html
 使用 UMD 格式
-<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.7/dist/drage.js"></script>
+<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.8/dist/drage.js"></script>
 # or
-<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.7/dist/drage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.8/dist/drage.js"></script>
 
 
 使用 ES 格式
-<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.7/dist/drage.es.js" type="module"></script>
+<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.8/dist/drage.es.js" type="module"></script>
 # or
-<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.7/dist/drage.es.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.8/dist/drage.es.js" type="module"></script>
 ``` 
 
 > #### 安装

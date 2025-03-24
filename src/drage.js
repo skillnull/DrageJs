@@ -200,6 +200,16 @@ class DrageJs {
 
 const Drage = new DrageJs()
 
+if (typeof window === "undefined" || typeof window === null) {
+  const jsdom = require("jsdom")
+  const {JSDOM} = jsdom
+  const DOM = new JSDOM(``)
+  window = DOM?.window
+  document = DOM?.window?.document
+  globalThis.window = window
+  globalThis.document = document
+}
+
 window.Drage = Drage
 
 export default Drage
