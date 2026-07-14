@@ -65,4 +65,5 @@ html {
   align-items: center;
   z-index: 99;
   overflow: hidden;
+  user-select: none;
 }
