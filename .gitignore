@@ -1,4 +1,5 @@
 .DS_Store
+.rollup
 
 yarn.lock
 package-lock.json

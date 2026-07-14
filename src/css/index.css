@@ -1,2 +1,68 @@
-@import "theme.dark.css";
-@import "theme_light.css";
+:root,
+[data-theme="light"] {
+  --drage-page-bg: #eeeeee;
+  --drage-page-color: #111111;
+  --drage-box-bg: #333333;
+  --drage-box-color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --drage-page-bg: #333333;
+    --drage-page-color: #ffffff;
+    --drage-box-bg: aliceblue;
+    --drage-box-color: #111111;
+  }
+}
+
+[data-theme="dark"] {
+  --drage-page-bg: #333333;
+  --drage-page-color: #ffffff;
+  --drage-box-bg: aliceblue;
+  --drage-box-color: #111111;
+}
+
+html,
+body,
+#app {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: fangsong;
+  font-weight: 300;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+
+html {
+  background-color: var(--drage-page-bg);
+  color: var(--drage-page-color);
+}
+
+#watermark_box {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.drag-box {
+  width: 100px;
+  height: 100px;
+  background: var(--drage-box-bg);
+  border-radius: 6px;
+  text-align: center;
+  cursor: move;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: var(--drage-box-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  overflow: hidden;
+}

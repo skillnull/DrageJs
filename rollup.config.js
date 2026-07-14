@@ -23,7 +23,7 @@ const globals = {
  * system - SystemJS 模块加载器的原生格式（别名：systemjs）
  */
 export default {
-  input: 'src/drage.js',
+  input: '.rollup/drage.js',
   plugins: [
     json(),
     nodeResolve({

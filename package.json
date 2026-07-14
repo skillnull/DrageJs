@@ -1,8 +1,10 @@
 {
   "name": "@skillnull/drage-js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "拖拽元素到页面任意位置",
-  "main": "dist/drage",
+  "main": "dist/drage.js",
+  "module": "dist/drage.es.js",
+  "types": "dist/drage.d.ts",
   "author": "skillnull",
   "keywords": [
     "DrageJs",
@@ -12,7 +14,7 @@
     "SKILL.NULL"
   ],
   "scripts": {
-    "build": "rollup --config rollup.config.js --bundleConfigAsCjs"
+    "build": "tsc -p tsconfig.json && rollup --config rollup.config.js --bundleConfigAsCjs && rm -rf .rollup"
   },
   "homepage": "https://github.com/skillnull/DrageJs",
   "repository": {
@@ -35,12 +37,16 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/node": "^26.1.1",
     "rollup": "^4.18.1",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@rollup/plugin-json": "^6.1.0",
     "jsdom": "^26.0.0",
     "rollup-plugin-polyfill-node": "^0.13.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
