@@ -16,14 +16,14 @@
 
 ```html
 <!-- UMD 格式 -->
-<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.9/dist/drage.js"></script>
+<script src="https://www.unpkg.com/@skillnull/drage-js@1.0.0/dist/drage.js"></script>
 <!-- 或 -->
-<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.9/dist/drage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@1.0.0/dist/drage.js"></script>
 
 <!-- ES 格式 -->
-<script src="https://www.unpkg.com/@skillnull/drage-js@0.0.9/dist/drage.es.js" type="module"></script>
+<script src="https://www.unpkg.com/@skillnull/drage-js@1.0.0/dist/drage.es.js" type="module"></script>
 <!-- 或 -->
-<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@0.0.9/dist/drage.es.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/@skillnull/drage-js@1.0.0/dist/drage.es.js" type="module"></script>
 ```
 
 ## 安装

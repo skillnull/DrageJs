@@ -1,7 +1,7 @@
 {
   "name": "@skillnull/drage-js",
-  "version": "0.0.9",
-  "description": "拖拽元素到页面任意位置",
+  "version": "1.0.0",
+  "description": "拖拽元素到页面任意位置**支持平台：** 浏览器 · 微信小程序 · Node.js · React Native",
   "main": "dist/drage.js",
   "module": "dist/drage.es.js",
   "types": "dist/drage.d.ts",
