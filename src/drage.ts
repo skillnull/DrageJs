@@ -167,6 +167,7 @@ class DrageJs {
     this._onResize = () => {
       this.clientW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
       this.clientH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+      this.resetPosition()
     }
     window.addEventListener('resize', this._onResize)
 
@@ -437,6 +438,17 @@ class DrageJs {
       storeLocal.remove('DrageJS_INFO')
       storeSession.remove('DrageJS_INFO')
     }
+  }
+
+  resetPosition() {
+    this.currentX = 0
+    this.currentY = 0
+    this.initX = 0
+    this.initY = 0
+    this.offsetX = 0
+    this.offsetY = 0
+    this.storageHandle('remove')
+    this.setRef()
   }
 
   /* ==================== 公共接口 ==================== */

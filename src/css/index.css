@@ -1,18 +1,36 @@
-:root,
+:root {
+  --drage-page-bg: #eeeeee;
+  --drage-page-color: #111111;
+  --drage-box-bg: #333333;
+  --drage-box-color: #ffffff;
+  --drage-fork-bg: #000000bf;
+  --drage-fork-color: #ffffff;
+  --drage-fork-shadow: 0 0 1px #ffffff;
+  --drage-fork-filter: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --drage-page-bg: #333333;
+    --drage-page-color: #ffffff;
+    --drage-box-bg: aliceblue;
+    --drage-box-color: #111111;
+    --drage-fork-bg: #ffffff;
+    --drage-fork-color: #111111;
+    --drage-fork-shadow: 0 0 1px #000000;
+    --drage-fork-filter: invert(100%) sepia(100%) saturate(10%) hue-rotate(221deg) brightness(100%) contrast(50%);
+  }
+}
+
 [data-theme="light"] {
   --drage-page-bg: #eeeeee;
   --drage-page-color: #111111;
   --drage-box-bg: #333333;
   --drage-box-color: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --drage-page-bg: #333333;
-    --drage-page-color: #ffffff;
-    --drage-box-bg: aliceblue;
-    --drage-box-color: #111111;
-  }
+  --drage-fork-bg: #000000bf;
+  --drage-fork-color: #ffffff;
+  --drage-fork-shadow: 0 0 1px #ffffff;
+  --drage-fork-filter: none;
 }
 
 [data-theme="dark"] {
@@ -20,6 +38,10 @@
   --drage-page-color: #ffffff;
   --drage-box-bg: aliceblue;
   --drage-box-color: #111111;
+  --drage-fork-bg: #ffffff;
+  --drage-fork-color: #111111;
+  --drage-fork-shadow: 0 0 1px #000000;
+  --drage-fork-filter: invert(100%) sepia(100%) saturate(10%) hue-rotate(221deg) brightness(100%) contrast(50%);
 }
 
 html,
@@ -39,6 +61,13 @@ body,
 html {
   background-color: var(--drage-page-bg);
   color: var(--drage-page-color);
+  color-scheme: light dark;
+}
+
+body,
+#app {
+  background-color: var(--drage-page-bg);
+  color: var(--drage-page-color);
 }
 
 #watermark_box {
@@ -47,6 +76,34 @@ html {
   position: absolute;
   z-index: -1;
   overflow: hidden;
+}
+
+.fork {
+  width: 40px;
+  height: 40px;
+  background-image: url("https://skillnull.com/wp-content/themes/basepress/assets/images/icon/github.png");
+  background-repeat: no-repeat;
+  background-size: calc(100% - 5px) calc(100% - 5px);
+  background-position: right 5px top 5px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 999999;
+  filter: var(--drage-fork-filter);
+}
+
+.fork > .text {
+  font-size: 12px;
+  position: absolute;
+  left: -50%;
+  top: 40%;
+  transform: rotate(45deg) translateY(-50%);
+  background: var(--drage-fork-bg);
+  width: 180%;
+  color: var(--drage-fork-color);
+  text-align: center;
+  text-shadow: var(--drage-fork-shadow);
 }
 
 .drag-box {

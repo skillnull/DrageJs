@@ -1,3 +1,20 @@
+const themeMedia = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
+
+const applyTheme = () => {
+  const theme = themeMedia && themeMedia.matches ? 'dark' : 'light'
+  document.documentElement.setAttribute('data-theme', theme)
+}
+
+applyTheme()
+
+if (themeMedia) {
+  if (themeMedia.addEventListener) {
+    themeMedia.addEventListener('change', applyTheme)
+  } else if (themeMedia.addListener) {
+    themeMedia.addListener(applyTheme)
+  }
+}
+
 class Watermark {
   constructor() {
     this.clientW = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;

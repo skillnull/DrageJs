@@ -52,6 +52,7 @@ declare class DrageJs {
         remove: any;
     };
     storageHandle(operation: DrageStorageOperation): void;
+    resetPosition(): void;
     /**
      * 启用拖拽
      * @param {Object} options
